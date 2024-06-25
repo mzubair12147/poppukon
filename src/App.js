@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./index.css";
 import Loader from "./components/Loader";
 import ErrorMessage from "./components/ErrorMessage";
@@ -12,22 +12,21 @@ import WatchedMovieList from "./components/WatchedMovieList";
 import WatchedSummary from "./components/WatchedSummary";
 import MovieDetails from "./components/MovieDetails";
 import { useMovies } from "./hook/useMovies";
-
-const API_KEY = process.env.REACT_APP_API_KEY;
+import { useLocalStorage } from "./hook/useLocalStorage";
 
 export default function App() {
     const [query, setQuery] = useState("");
     const [selected, setSelected] = useState(null);
 
-    const [watched, setWatched] = useState(function () {
-        return JSON.parse(localStorage.getItem("watched"));
-    });
+    // custom hooks
+    const [watched, setWatched] = useLocalStorage([], "watched");
+    const [movies, loading, error] = useMovies(query, handleCloseMovie);
 
     function handleSelectMovie(movieID) {
         setSelected((currID) => (movieID === currID ? null : movieID));
     }
 
-    function handleCloseMovie(movieID) {
+    function handleCloseMovie() {
         setSelected(null);
     }
 
@@ -44,14 +43,16 @@ export default function App() {
         );
     }
 
-    useEffect(
-        function () {
-            localStorage.setItem("watched", JSON.stringify(watched));
-        },
-        [watched]
-    );
+    // const [watched, setWatched] = useState(function () {
+    //     return JSON.parse(localStorage.getItem("watched"));
+    // });
 
-    const [movies, loading, error] = useMovies(query, handleCloseMovie);
+    // useEffect(
+    //     function () {
+    //         localStorage.setItem("watched", JSON.stringify(watched));
+    //     },
+    //     [watched]
+    // );
 
     return (
         <>

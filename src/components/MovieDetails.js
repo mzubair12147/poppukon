@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Loader from "./Loader";
 import StarRating from "./StarRating";
+import { useKey } from "../hook/useKey";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -96,23 +97,26 @@ export default function MovieDetails({
         [selected]
     );
 
-    useEffect(
-        function () {
-            const closeMovie = function (e) {
-                if (e.key === "Escape") {
-                    onCloseMovie();
-                }
-            };
+    //custom hook
+    useKey("Escape", onCloseMovie);
 
-            document.addEventListener("keydown", closeMovie);
+    // useEffect(
+    //     function () {
+    //         const closeMovie = function (e) {
+    //             if (e.key === "Escape") {
+    //                 onCloseMovie();
+    //             }
+    //         };
 
-            return function () {
-                document.removeEventListener("keydown", closeMovie);
-                console.log("keydown event is removed");
-            };
-        },
-        [onCloseMovie]
-    );
+    //         document.addEventListener("keydown", closeMovie);
+
+    //         return function () {
+    //             document.removeEventListener("keydown", closeMovie);
+    //             console.log("keydown event is removed");
+    //         };
+    //     },
+    //     [onCloseMovie]
+    // );
 
     useEffect(
         function () {
