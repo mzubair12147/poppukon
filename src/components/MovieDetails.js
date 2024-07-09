@@ -3,7 +3,7 @@ import Loader from "./Loader";
 import StarRating from "./StarRating";
 import { useKey } from "../hook/useKey";
 
-const API_KEY = process.env.REACT_APP_API_KEY;
+const API_KEY = "da5d4ab9";
 
 export default function MovieDetails({
     selected,
